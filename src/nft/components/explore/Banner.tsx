@@ -37,11 +37,11 @@ const BannerBackground = styled(AbsoluteFill)<{ backgroundImage: string }>`
   background-image: ${(props) => `url(${props.backgroundImage})`};
   filter: blur(62px);
 
-  opacity: ${({ theme }) => (theme.darkMode ? 0.3 : 0.2)};
+  opacity: ${({ theme }) => (theme.darkMode ? 0.2 : 0.1)};
 `
 
 const PlainBackground = styled(AbsoluteFill)`
-  background: ${({ theme }) => `linear-gradient(${opacify(10, theme.userThemeColor)}, transparent)`};
+  background: ${({ theme }) => `linear-gradient(${opacify(10, theme.accent1)}, transparent)`};
 `
 
 const BannerMainArea = styled.div`
@@ -65,15 +65,15 @@ const BannerMainArea = styled.div`
 
 const HeaderContainer = styled.div`
   display: flex;
-  max-width: 500px;
-  font-weight: 500;
+  max-width: 535px;
+  font-weight: 535;
   font-size: 72px;
   line-height: 88px;
   align-self: center;
   flex-shrink: 0;
   padding-bottom: 32px;
 
-  color: ${({ theme }) => theme.textPrimary};
+  color: ${({ theme }) => theme.neutral1};
 
   @media only screen and (max-width: ${({ theme }) => `${theme.breakpoint.lg}px`}) {
     font-size: 48px;

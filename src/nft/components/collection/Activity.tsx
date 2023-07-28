@@ -3,14 +3,13 @@ import { NftActivityType } from 'graphql/data/__generated__/types-and-hooks'
 import { useNftActivity } from 'graphql/data/nft/NftActivity'
 import { Box } from 'nft/components/Box'
 import { Column, Row } from 'nft/components/Flex'
-import { themeVars, vars } from 'nft/css/sprinkles.css'
+import { themeVars } from 'nft/css/sprinkles.css'
 import { useBag, useIsMobile } from 'nft/hooks'
 import { ActivityEvent, ActivityEventType } from 'nft/types'
 import { fetchPrice } from 'nft/utils/fetchPrice'
 import { useCallback, useEffect, useReducer, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import styled from 'styled-components/macro'
-import { useIsDarkMode } from 'theme/components/ThemeToggle'
 
 import * as styles from './Activity.css'
 import { AddressCell, BuyCell, EventCell, ItemCell, PriceCell } from './ActivityCells'
@@ -24,9 +23,11 @@ enum ColumnHeaders {
   To = 'To',
 }
 
-const FilterBox = styled.div<{ backgroundColor: string }>`
+const FilterBox = styled.div<{ backgroundColor: string; color: string; border: string }>`
   display: flex;
+  color: ${({ color }) => color};
   background: ${({ backgroundColor }) => backgroundColor};
+  border: ${({ border }) => border};
   ${OpacityHoverState};
 `
 
@@ -88,7 +89,6 @@ export const Activity = ({ contractAddress, rarityVerified, collectionName, chai
   const toggleCart = useBag((state) => state.toggleBag)
   const isMobile = useIsMobile()
   const [ethPriceInUSD, setEthPriceInUSD] = useState(0)
-  const isDarkMode = useIsDarkMode()
 
   useEffect(() => {
     fetchPrice().then((price) => {
@@ -99,19 +99,20 @@ export const Activity = ({ contractAddress, rarityVerified, collectionName, chai
   const Filter = useCallback(
     function ActivityFilter({ eventType }: { eventType: ActivityEventType }) {
       const isActive = activeFilters[eventType]
-      const activeBackgroundColor = isDarkMode ? vars.color.gray500 : vars.color.gray200
 
       return (
         <FilterBox
           className={styles.filter}
-          backgroundColor={isActive ? activeBackgroundColor : themeVars.colors.backgroundInteractive}
+          backgroundColor={isActive ? themeVars.colors.surface3 : themeVars.colors.surface1}
+          color={isActive ? themeVars.colors.neutral1 : themeVars.colors.neutral1}
+          border={`1px solid ${isActive ? themeVars.colors.surface3 : themeVars.colors.surface3}`}
           onClick={() => filtersDispatch({ eventType })}
         >
           {eventType.charAt(0) + eventType.slice(1).toLowerCase() + 's'}
         </FilterBox>
       )
     },
-    [activeFilters, isDarkMode]
+    [activeFilters]
   )
 
   return (

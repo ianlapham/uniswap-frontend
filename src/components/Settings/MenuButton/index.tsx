@@ -1,6 +1,6 @@
 import { t, Trans } from '@lingui/macro'
+import { ReactComponent as Settings } from 'assets/svg/settings.svg'
 import Row from 'components/Row'
-import { Settings } from 'react-feather'
 import { useUserSlippageTolerance } from 'state/user/hooks'
 import { SlippageTolerance } from 'state/user/types'
 import styled from 'styled-components/macro'
@@ -8,10 +8,10 @@ import { ThemedText } from 'theme'
 import validateUserSlippageTolerance, { SlippageValidationResult } from 'utils/validateUserSlippageTolerance'
 
 const Icon = styled(Settings)`
-  height: 20px;
-  width: 20px;
+  height: 24px;
+  width: 24px;
   > * {
-    stroke: ${({ theme }) => theme.textSecondary};
+    fill: ${({ theme }) => theme.neutral2};
   }
 `
 
@@ -37,11 +37,11 @@ const IconContainer = styled(Row)`
 
 const IconContainerWithSlippage = styled(IconContainer)<{ displayWarning?: boolean }>`
   div {
-    color: ${({ theme, displayWarning }) => (displayWarning ? theme.accentWarning : theme.textSecondary)};
+    color: ${({ theme, displayWarning }) => (displayWarning ? theme.deprecated_accentWarning : theme.neutral2)};
   }
 
   background-color: ${({ theme, displayWarning }) =>
-    displayWarning ? theme.accentWarningSoft : theme.backgroundModule};
+    displayWarning ? theme.deprecated_accentWarningSoft : theme.surface2};
 `
 
 const ButtonContent = () => {

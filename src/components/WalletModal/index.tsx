@@ -1,4 +1,5 @@
 import { useWeb3React } from '@web3-react/core'
+import { ReactComponent as Settings } from 'assets/svg/settings.svg'
 import IconButton from 'components/AccountDrawer/IconButton'
 import { AutoColumn } from 'components/Column'
 import { AutoRow } from 'components/Row'
@@ -6,7 +7,6 @@ import { getConnections, networkConnection } from 'connection'
 import { ActivationStatus, useActivationState } from 'connection/activate'
 import { isSupportedChain } from 'constants/chains'
 import { useEffect } from 'react'
-import { Settings } from 'react-feather'
 import styled from 'styled-components/macro'
 import { ThemedText } from 'theme'
 import { flexColumnNoWrap } from 'theme/styles'
@@ -17,7 +17,7 @@ import PrivacyPolicyNotice from './PrivacyPolicyNotice'
 
 const Wrapper = styled.div`
   ${flexColumnNoWrap};
-  background-color: ${({ theme }) => theme.backgroundSurface};
+  background-color: ${({ theme }) => theme.surface1};
   width: 100%;
   padding: 14px 16px 16px;
   flex: 1;

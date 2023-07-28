@@ -50,7 +50,7 @@ const StyledXButton = styled(X)`
   cursor: pointer;
   justify-self: flex-end;
 
-  color: ${({ theme }) => theme.textPrimary};
+  color: ${({ theme }) => theme.neutral1};
   ${OpacityHoverState};
 `
 
@@ -81,7 +81,7 @@ const Success = styled(AnimatedEntranceConfirmationIcon)`
 `
 
 const LearnMoreLink = styled(ExternalLink)`
-  font-weight: 600;
+  font-weight: 536;
 `
 const DescriptionText = styled(ThemedText.LabelMicro)`
   text-align: center;
