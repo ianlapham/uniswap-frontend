@@ -158,6 +158,7 @@
     "@lingui/macro": "^3.14.0",
     "@lingui/react": "^3.14.0",
     "@looksrare/sdk": "^0.10.2",
+    "@magiclabs/web3-react": "^0.0.10",
     "@metamask/jazzicon": "^2.0.0",
     "@opensea/seaport-js": "^1.2.0",
     "@popperjs/core": "^2.4.4",

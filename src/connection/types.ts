@@ -9,6 +9,7 @@ export enum ConnectionType {
   WALLET_CONNECT_V2 = 'WALLET_CONNECT_V2',
   NETWORK = 'NETWORK',
   GNOSIS_SAFE = 'GNOSIS_SAFE',
+  MAGIC_LINK = 'MAGIC_LINK',
 }
 
 export interface Connection {

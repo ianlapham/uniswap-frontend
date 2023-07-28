@@ -1,3 +1,4 @@
+import { MagicConnect } from '@magiclabs/web3-react'
 import { ChainId } from '@uniswap/sdk-core'
 import { CoinbaseWallet } from '@web3-react/coinbase-wallet'
 import { initializeConnector } from '@web3-react/core'
@@ -8,6 +9,7 @@ import { Actions, Connector } from '@web3-react/types'
 import GNOSIS_ICON from 'assets/images/gnosis.png'
 import UNISWAP_LOGO from 'assets/svg/logo.svg'
 import COINBASE_ICON from 'assets/wallets/coinbase-icon.svg'
+import MAGIC_LINK_ICON from 'assets/wallets/magic-link-icon.svg'
 import UNIWALLET_ICON from 'assets/wallets/uniswap-wallet-icon.png'
 import WALLET_CONNECT_ICON from 'assets/wallets/walletconnect-icon.svg'
 import { isMobile, isNonIOSPhone } from 'utils/userAgent'
@@ -135,8 +137,32 @@ const coinbaseWalletConnection: Connection = {
   },
 }
 
+const [magicLinkConnector, magicLinkHooks] = initializeConnector<MagicConnect>(
+  (actions) =>
+    new MagicConnect({
+      actions,
+      options: {
+        apiKey: 'pk_live_1322FC5A55C7C52B',
+        networkOptions: {
+          rpcUrl: 'https://rpc.mevblocker.io',
+          chainId: 1,
+        },
+      },
+    })
+)
+
+export const MagicLinkConnector: Connection = {
+  getName: () => 'Magic Link',
+  connector: magicLinkConnector,
+  hooks: magicLinkHooks,
+  type: ConnectionType.MAGIC_LINK,
+  getIcon: () => MAGIC_LINK_ICON,
+  shouldDisplay: () => Boolean((isMobile && !getIsInjectedMobileBrowser()) || !isMobile),
+}
+
 export function getConnections() {
   return [
+    MagicLinkConnector,
     uniwalletWCV2ConnectConnection,
     injectedConnection,
     walletConnectV2Connection,
@@ -155,6 +181,8 @@ export function getConnection(c: Connector | ConnectionType) {
     return connection
   } else {
     switch (c) {
+      case ConnectionType.MAGIC_LINK:
+        return MagicLinkConnector
       case ConnectionType.INJECTED:
         return injectedConnection
       case ConnectionType.COINBASE_WALLET:
