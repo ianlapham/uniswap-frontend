@@ -48,11 +48,11 @@ const InfoContainer = styled(ColumnCenter)`
 `
 
 const StyledHeadlineText = styled.div`
-  font-weight: 600;
+  font-weight: 535;
   font-size: 20px;
   line-height: 28px;
   text-align: center;
-  color: ${({ theme }) => theme.textPrimary};
+  color: ${({ theme }) => theme.neutral1};
 
   @media screen and (min-width: ${BREAKPOINTS.sm}px) {
     line-height: 44px;
@@ -60,11 +60,11 @@ const StyledHeadlineText = styled.div`
   }
 `
 const StyledSubheaderText = styled.div`
-  font-weight: 500;
+  font-weight: 535;
   font-size: 14px;
   line-height: 20px;
   text-align: center;
-  color: ${({ theme }) => theme.textSecondary};
+  color: ${({ theme }) => theme.neutral2};
 
   @media screen and (min-width: ${BREAKPOINTS.sm}px) {
     line-height: 24px;

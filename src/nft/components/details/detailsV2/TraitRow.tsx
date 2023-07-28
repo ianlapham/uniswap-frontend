@@ -15,8 +15,8 @@ const TraitRowLink = styled(Link)`
 const SubheaderTiny = styled.div<{ $color?: string }>`
   font-size: 10px;
   line-height: 16px;
-  font-weight: 600;
-  color: ${({ theme, $color }) => ($color ? $color : theme.textSecondary)};
+  font-weight: 535;
+  color: ${({ theme, $color }) => ($color ? $color : theme.neutral2)};
 `
 
 const SubheaderTinyHidden = styled(SubheaderTiny)`
@@ -29,7 +29,7 @@ const TraitRowContainer = styled(Row)`
   cursor: pointer;
   text-decoration: none;
   &:hover {
-    background: ${({ theme }) => theme.hoverDefault};
+    background: ${({ theme }) => theme.deprecated_hoverDefault};
     ${SubheaderTinyHidden} {
       opacity: 1;
     }

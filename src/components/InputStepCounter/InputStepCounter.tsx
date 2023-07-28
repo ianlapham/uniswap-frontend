@@ -36,16 +36,16 @@ const SmallButton = styled(ButtonGray)`
 `
 
 const FocusedOutlineCard = styled(OutlineCard)<{ active?: boolean; pulsing?: boolean }>`
-  border-color: ${({ active, theme }) => active && theme.accentAction};
+  border-color: ${({ active, theme }) => active && theme.accent1};
   padding: 12px;
-  animation: ${({ pulsing, theme }) => pulsing && pulse(theme.accentAction)} 0.8s linear;
+  animation: ${({ pulsing, theme }) => pulsing && pulse(theme.accent1)} 0.8s linear;
 `
 
 const StyledInput = styled(NumericalInput)<{ usePercent?: boolean }>`
   background-color: transparent;
   text-align: center;
   width: 100%;
-  font-weight: 500;
+  font-weight: 535;
   padding: 0 10px;
 
   ${({ theme }) => theme.deprecated_mediaWidth.deprecated_upToSmall`
@@ -58,13 +58,13 @@ const StyledInput = styled(NumericalInput)<{ usePercent?: boolean }>`
 `
 
 const InputTitle = styled(ThemedText.DeprecatedSmall)`
-  color: ${({ theme }) => theme.textSecondary};
+  color: ${({ theme }) => theme.neutral2};
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 535;
 `
 
 const ButtonLabel = styled(ThemedText.DeprecatedWhite)<{ disabled: boolean }>`
-  color: ${({ theme, disabled }) => (disabled ? theme.textSecondary : theme.textPrimary)} !important;
+  color: ${({ theme, disabled }) => (disabled ? theme.neutral2 : theme.neutral1)} !important;
 `
 
 interface StepCounterProps {

@@ -18,7 +18,7 @@ const MobileWrapper = styled(AutoColumn)`
 `
 
 const BaseWrapper = styled.div<{ disable?: boolean }>`
-  border: 1px solid ${({ theme, disable }) => (disable ? theme.accentActive : theme.backgroundOutline)};
+  border: 1px solid ${({ theme }) => theme.surface3};
   border-radius: 16px;
   display: flex;
   padding: 6px;
@@ -27,11 +27,11 @@ const BaseWrapper = styled.div<{ disable?: boolean }>`
   align-items: center;
   :hover {
     cursor: ${({ disable }) => !disable && 'pointer'};
-    background-color: ${({ theme }) => theme.hoverDefault};
+    background-color: ${({ theme }) => theme.deprecated_hoverDefault};
   }
 
-  color: ${({ theme, disable }) => disable && theme.accentActive};
-  background-color: ${({ theme, disable }) => disable && theme.accentActiveSoft};
+  color: ${({ theme, disable }) => disable && theme.neutral1};
+  background-color: ${({ theme, disable }) => disable && theme.surface3};
 `
 
 const formatAnalyticsEventProperties = (currency: Currency, searchQuery: string, isAddressSearch: string | false) => ({
@@ -84,7 +84,7 @@ export default function CommonBases({
                 data-testid={`common-base-${currency.symbol}`}
               >
                 <CurrencyLogoFromList currency={currency} />
-                <Text fontWeight={500} fontSize={16}>
+                <Text fontWeight={535} fontSize={16}>
                   {currency.symbol}
                 </Text>
               </BaseWrapper>

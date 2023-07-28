@@ -32,12 +32,12 @@ const StyledHistoryLink = styled(HistoryLink)<{ flex?: string }>`
 `
 
 const ActiveText = styled.div`
-  font-weight: 500;
+  font-weight: 535;
   font-size: 20px;
 `
 
 const StyledArrowLeft = styled(ArrowLeft)`
-  color: ${({ theme }) => theme.textPrimary};
+  color: ${({ theme }) => theme.neutral1};
 `
 
 export function FindPoolTabs({ origin }: { origin: string }) {
@@ -94,19 +94,19 @@ export function AddRemoveTabs({
           }}
           flex={children ? '1' : undefined}
         >
-          <StyledArrowLeft stroke={theme.textSecondary} />
+          <StyledArrowLeft stroke={theme.neutral2} />
         </StyledHistoryLink>
         <ThemedText.DeprecatedMediumHeader
-          fontWeight={500}
+          fontWeight={535}
           fontSize={20}
           style={{ flex: '1', margin: 'auto', textAlign: children ? 'start' : 'center' }}
         >
           {creating ? (
             <Trans>Create a pair</Trans>
           ) : adding ? (
-            <Trans>Add Liquidity</Trans>
+            <Trans>Add liquidity</Trans>
           ) : (
-            <Trans>Remove Liquidity</Trans>
+            <Trans>Remove liquidity</Trans>
           )}
         </ThemedText.DeprecatedMediumHeader>
         <Box style={{ marginRight: '.5rem' }}>{children}</Box>
@@ -123,7 +123,7 @@ export function CreateProposalTabs() {
         <HistoryLink to="/vote">
           <StyledArrowLeft />
         </HistoryLink>
-        <ActiveText style={{ marginLeft: 'auto', marginRight: 'auto' }}>Create Proposal</ActiveText>
+        <ActiveText style={{ marginLeft: 'auto', marginRight: 'auto' }}>Create proposal</ActiveText>
       </Row>
     </Tabs>
   )

@@ -4,9 +4,11 @@ import { formatNumber, NumberType } from '@uniswap/conedison/format'
 import { CurrencyAmount, Token } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { sendAnalyticsEvent, TraceEvent } from 'analytics'
+import { ReactComponent as Power } from 'assets/svg/power.svg'
+import { ReactComponent as Settings } from 'assets/svg/settings.svg'
 import { ButtonEmphasis, ButtonSize, LoadingButtonSpinner, ThemeButton } from 'components/Button'
 import Column from 'components/Column'
-import { AutoRow } from 'components/Row'
+import { AutoRow, RowBetween } from 'components/Row'
 import { LoadingBubble } from 'components/Tokens/loading'
 import { formatDelta } from 'components/Tokens/TokenDetails/PriceChart'
 import Tooltip from 'components/Tooltip'
@@ -17,7 +19,7 @@ import { useProfilePageState, useSellAsset, useWalletCollections } from 'nft/hoo
 import { useIsNftClaimAvailable } from 'nft/hooks/useIsNftClaimAvailable'
 import { ProfilePageStateType } from 'nft/types'
 import { useCallback, useState } from 'react'
-import { ArrowDownRight, ArrowUpRight, CreditCard, IconProps, Info, LogOut, Settings } from 'react-feather'
+import { CreditCard, IconProps, Info } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from 'state/hooks'
 import { updateSelectedWallet } from 'state/user/reducer'
@@ -25,6 +27,8 @@ import styled, { useTheme } from 'styled-components/macro'
 import { CopyHelper, ExternalLink, ThemedText } from 'theme'
 import { shortenAddress } from 'utils'
 
+import { ReactComponent as ArrowChangeDown } from '../../assets/svg/arrow-change-down.svg'
+import { ReactComponent as ArrowChangeUp } from '../../assets/svg/arrow-change-up.svg'
 import { useCloseModal, useFiatOnrampAvailability, useOpenModal, useToggleModal } from '../../state/application/hooks'
 import { ApplicationModal } from '../../state/application/reducer'
 import { useUserHasAvailableClaim, useUserUnclaimedAmount } from '../../state/claim/hooks'
@@ -50,6 +54,7 @@ const HeaderButton = styled(ThemeButton)`
   border-width: 1px;
   height: 40px;
   margin-top: 8px;
+  width: 100%;
 `
 
 const WalletButton = styled(ThemeButton)`
@@ -88,7 +93,7 @@ const IconContainer = styled.div`
 `
 const FiatOnrampNotAvailableText = styled(ThemedText.Caption)`
   align-items: center;
-  color: ${({ theme }) => theme.textSecondary};
+  color: ${({ theme }) => theme.neutral2};
   display: flex;
   justify-content: center;
 `
@@ -107,6 +112,7 @@ const StatusWrapper = styled.div`
   max-width: 70%;
   padding-right: 8px;
   display: inline-flex;
+  gap: 8px;
 `
 
 const AccountNamesWrapper = styled.div`
@@ -125,7 +131,7 @@ const StyledInfoIcon = styled(Info)`
   flex: 1 1 auto;
 `
 const StyledLoadingButtonSpinner = styled(LoadingButtonSpinner)`
-  fill: ${({ theme }) => theme.accentAction};
+  fill: ${({ theme }) => theme.accent1};
 `
 
 const HeaderWrapper = styled.div`
@@ -151,15 +157,11 @@ const PortfolioDrawerContainer = styled(Column)`
 export function PortfolioArrow({ change, ...rest }: { change: number } & IconProps) {
   const theme = useTheme()
   return change < 0 ? (
-    <ArrowDownRight color={theme.accentCritical} size={20} {...rest} />
+    <ArrowChangeDown color={theme.critical} width={16} {...rest} />
   ) : (
-    <ArrowUpRight color={theme.accentSuccess} size={20} {...rest} />
+    <ArrowChangeUp color={theme.success} width={16} {...rest} />
   )
 }
-
-const LogOutCentered = styled(LogOut)`
-  transform: translateX(2px);
-`
 
 export default function AuthenticatedHeader({ account, openSettings }: { account: string; openSettings: () => void }) {
   const { connector } = useWeb3React()
@@ -227,7 +229,9 @@ export default function AuthenticatedHeader({ account, openSettings }: { account
   const openFiatOnrampUnavailableTooltip = useCallback(() => setShow(true), [setShow])
   const closeFiatOnrampUnavailableTooltip = useCallback(() => setShow(false), [setShow])
 
-  const { data: portfolioBalances } = useCachedPortfolioBalancesQuery({ account })
+  const { data: portfolioBalances } = useCachedPortfolioBalancesQuery({
+    account,
+  })
   const portfolio = portfolioBalances?.portfolios?.[0]
   const totalBalance = portfolio?.tokensTotalDenominatedValue?.value
   const absoluteChange = portfolio?.tokensTotalDenominatedValueChange?.absolute?.value
@@ -246,7 +250,7 @@ export default function AuthenticatedHeader({ account, openSettings }: { account
               </ThemedText.SubHeader>
               {/* Displays smaller view of account if ENS name was rendered above */}
               {ENSName && (
-                <ThemedText.BodySmall color="textTertiary">
+                <ThemedText.BodySmall color="neutral2">
                   <CopyText toCopy={account}>{shortenAddress(account)}</CopyText>
                 </ThemedText.BodySmall>
               )}
@@ -269,7 +273,7 @@ export default function AuthenticatedHeader({ account, openSettings }: { account
               data-testid="wallet-disconnect"
               onConfirm={disconnect}
               onShowConfirm={setShowDisconnectConfirm}
-              Icon={LogOutCentered}
+              Icon={Power}
               text="Disconnect"
               dismissOnHoverOut
             />
@@ -279,7 +283,7 @@ export default function AuthenticatedHeader({ account, openSettings }: { account
       <PortfolioDrawerContainer>
         {totalBalance !== undefined ? (
           <FadeInColumn gap="xs">
-            <ThemedText.HeadlineLarge fontWeight={500} data-testid="portfolio-total-balance">
+            <ThemedText.HeadlineLarge data-testid="portfolio-total-balance">
               {formatNumber(totalBalance, NumberType.PortfolioBalance)}
             </ThemedText.HeadlineLarge>
             <AutoRow marginBottom="20px">
@@ -301,54 +305,57 @@ export default function AuthenticatedHeader({ account, openSettings }: { account
             <LoadingBubble height="16px" width="100px" margin="4px 0 20px 0" />
           </Column>
         )}
-        {!shouldDisableNFTRoutes && (
-          <HeaderButton
-            data-testid="nft-view-self-nfts"
-            onClick={navigateToProfile}
-            size={ButtonSize.medium}
-            emphasis={ButtonEmphasis.medium}
-          >
-            <Trans>View and sell NFTs</Trans>
-          </HeaderButton>
-        )}
-        <HeaderButton
-          size={ButtonSize.medium}
-          emphasis={ButtonEmphasis.medium}
-          onClick={handleBuyCryptoClick}
-          disabled={disableBuyCryptoButton}
-          data-testid="wallet-buy-crypto"
-        >
-          {error ? (
-            <ThemedText.BodyPrimary>{error}</ThemedText.BodyPrimary>
-          ) : (
-            <>
-              {fiatOnrampAvailabilityLoading ? (
-                <StyledLoadingButtonSpinner />
-              ) : (
-                <CreditCard height="20px" width="20px" />
-              )}{' '}
-              <Trans>Buy crypto</Trans>
-            </>
-          )}
-        </HeaderButton>
-        {Boolean(!fiatOnrampAvailable && fiatOnrampAvailabilityChecked) && (
-          <FiatOnrampNotAvailableText marginTop="8px">
-            <Trans>Not available in your region</Trans>
-            <Tooltip
-              show={showFiatOnrampUnavailableTooltip}
-              text={<Trans>Moonpay is not available in some regions. Click to learn more.</Trans>}
+        <RowBetween gap="sm">
+          {!shouldDisableNFTRoutes && (
+            <HeaderButton
+              data-testid="nft-view-self-nfts"
+              onClick={navigateToProfile}
+              size={ButtonSize.medium}
+              emphasis={ButtonEmphasis.highSoft}
             >
-              <FiatOnrampAvailabilityExternalLink
-                onMouseEnter={openFiatOnrampUnavailableTooltip}
-                onMouseLeave={closeFiatOnrampUnavailableTooltip}
-                style={{ color: 'inherit' }}
-                href="https://support.uniswap.org/hc/en-us/articles/11306664890381-Why-isn-t-MoonPay-available-in-my-region-"
+              <Trans>Sell NFTs</Trans>
+            </HeaderButton>
+          )}
+          <HeaderButton
+            size={ButtonSize.medium}
+            emphasis={ButtonEmphasis.highSoft}
+            onClick={handleBuyCryptoClick}
+            disabled={disableBuyCryptoButton}
+            data-testid="wallet-buy-crypto"
+          >
+            {error ? (
+              <ThemedText.BodyPrimary>{error}</ThemedText.BodyPrimary>
+            ) : (
+              <>
+                {fiatOnrampAvailabilityLoading ? (
+                  <StyledLoadingButtonSpinner />
+                ) : (
+                  <CreditCard height="20px" width="20px" />
+                )}{' '}
+                <Trans>Buy crypto</Trans>
+              </>
+            )}
+          </HeaderButton>
+
+          {Boolean(!fiatOnrampAvailable && fiatOnrampAvailabilityChecked) && (
+            <FiatOnrampNotAvailableText marginTop="8px">
+              <Trans>Not available in your region</Trans>
+              <Tooltip
+                show={showFiatOnrampUnavailableTooltip}
+                text={<Trans>Moonpay is not available in some regions. Click to learn more.</Trans>}
               >
-                <StyledInfoIcon />
-              </FiatOnrampAvailabilityExternalLink>
-            </Tooltip>
-          </FiatOnrampNotAvailableText>
-        )}
+                <FiatOnrampAvailabilityExternalLink
+                  onMouseEnter={openFiatOnrampUnavailableTooltip}
+                  onMouseLeave={closeFiatOnrampUnavailableTooltip}
+                  style={{ color: 'inherit' }}
+                  href="https://support.uniswap.org/hc/en-us/articles/11306664890381-Why-isn-t-MoonPay-available-in-my-region-"
+                >
+                  <StyledInfoIcon />
+                </FiatOnrampAvailabilityExternalLink>
+              </Tooltip>
+            </FiatOnrampNotAvailableText>
+          )}
+        </RowBetween>
         <MiniPortfolio account={account} />
         {isUnclaimed && (
           <UNIButton onClick={openClaimModal} size={ButtonSize.medium} emphasis={ButtonEmphasis.medium}>
